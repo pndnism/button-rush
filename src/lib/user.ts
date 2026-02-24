@@ -110,6 +110,7 @@ export function advanceToStage(user: UserState, nextStage: number): UserState {
   return {
     ...user,
     currentStage: nextStage,
+    remainingPresses: 0, // 広告で得たタップは持ち越せない
     usedFreePress: false, // 新しいステージでは無料押下をリセット
   };
 }
@@ -121,6 +122,7 @@ export function resetToStage1(user: UserState): UserState {
   return {
     ...user,
     currentStage: 1,
+    remainingPresses: 0,
     usedFreePress: false,
   };
 }
