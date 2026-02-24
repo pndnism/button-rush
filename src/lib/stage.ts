@@ -1,7 +1,7 @@
 import { StageConfig, StageState } from '@/types';
 
 // ステージごとのボタン数設定
-const BUTTON_COUNTS = [1, 4, 9, 25, 49, 64, 81, 100];
+const BUTTON_COUNTS = [2, 4, 9, 25, 49, 64, 81, 100];
 const CORRECT_RATIO = 0.3;
 const MAX_STAGE = BUTTON_COUNTS.length;
 
