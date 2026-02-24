@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stage 2 - Button Quest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta name="view-transition" content="same-origin">
+  <link rel="prefetch" href="https://p.superdesign.dev/draft/1c4531b0-1e37-4905-a6e8-2b0834917ee5" as="document">
+  <link rel="prefetch" href="https://p.superdesign.dev/draft/26de9a64-f743-42a0-84ea-826ee0fb6df0" as="document">
+  <link rel="prefetch" href="https://p.superdesign.dev/draft/5e2d3bcc-e6c1-4fc8-9477-bde3bb9133a9" as="document">
+  <link rel="prefetch" href="https://p.superdesign.dev/draft/ba927e26-dad3-476f-bbd3-02ea254c5dc3" as="document">
+  <link rel="prefetch" href="https://p.superdesign.dev/draft/69fa3a3a-b0d9-4736-b7cd-43c78c200356" as="document">
+  <link rel="prefetch" href="https://p.superdesign.dev/draft/9027aa5c-ba18-40a6-96ef-2c596ac165d1" as="document">
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/satoshi');
+
+    html {
+      background-color: #ffffff;
+    }
+    
+    @view-transition {
+      navigation: auto;
+    }
+
+    body {
+      font-family: 'Satoshi', 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    ::view-transition-old(stage-header),
+    ::view-transition-new(stage-header) {
+      animation: none;
+      mix-blend-mode: normal;
+    }
+
+    ::view-transition-old(main-content) {
+      animation: 0.25s ease-out both fade-out;
+    }
+    ::view-transition-new(main-content) {
+      animation: 0.25s ease-in 0.1s both fade-in;
+    }
+
+    @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+    .button-3d {
+      transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 6px 0 var(--btn-shadow), 0 12px 20px rgba(0,0,0,0.1);
+    }
+
+    .button-3d:active, .button-3d.pressed {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 var(--btn-shadow), 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .button-circle { width: 80px; height: 80px; border-radius: 9999px; }
+    .button-square { width: 76px; height: 76px; border-radius: 14px; }
+    .button-rect { width: 110px; height: 70px; border-radius: 10px; }
+
+    .btn-red { --btn-shadow: #b91c1c; background: #ef4444; }
+    .btn-blue { --btn-shadow: #1d4ed8; background: #3b82f6; }
+    .btn-green { --btn-shadow: #15803d; background: #22c55e; }
+    .btn-yellow { --btn-shadow: #a16207; background: #eab308; }
+    .btn-gray { --btn-shadow: #374151; background: #6b7280; }
+    .btn-pink { --btn-shadow: #be185d; background: #ec4899; }
+
+    .grain {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+    }
+
+    .correct-pulse::after {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border: 4px solid #22c55e;
+      border-radius: inherit;
+      animation: pulse-ring 1.5s infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.9); opacity: 0; }
+      50% { opacity: 0.3; }
+      100% { transform: scale(1.2); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen bg-white relative flex flex-col">
+    <div class="fixed inset-0 grain z-10"></div>
+
+    <!-- Header status (Persistent) -->
+    <header class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-8" style="view-transition-name: stage-header">
+       <div class="bg-white shadow-xl px-8 py-4 rounded-full border border-gray-100 flex flex-col items-center gap-1 cursor-default">
+          <div class="flex items-center gap-6 text-sm font-medium text-gray-400">
+             <span class="flex items-center gap-2"><iconify-icon icon="lucide:layers" class="text-blue-500"></iconify-icon> STAGE <span class="text-gray-900 font-black">2</span></span>
+             <span class="w-px h-4 bg-gray-200"></span>
+             <span class="flex items-center gap-2"><iconify-icon icon="lucide:target" class="text-green-500"></iconify-icon> REMAINING <span class="text-gray-900 font-black">1 / 2</span></span>
+             <span class="w-px h-4 bg-gray-200"></span>
+             <span class="flex items-center gap-2"><iconify-icon icon="lucide:battery-medium" class="text-orange-500"></iconify-icon> ENERGY <span class="text-gray-900 font-black">4</span></span>
+          </div>
+       </div>
+    </header>
+
+    <!-- Stage 2 Button Grid (Main Content) -->
+    <main id="game-canvas" class="flex-1 flex flex-wrap content-start justify-center gap-x-12 gap-y-16 p-12 lg:p-32 pt-48 max-w-5xl mx-auto overflow-y-auto z-20" style="view-transition-name: main-content">
+      <!-- Found Correct Button -->
+      <div class="flex flex-col items-center gap-2">
+        <button class="button-3d button-circle btn-green pressed correct-pulse flex items-center justify-center relative pointer-events-none" id="btn-s2-1">
+          <iconify-icon icon="lucide:check" class="text-white text-3xl"></iconify-icon>
+        </button>
+        <span class="text-[10px] text-green-600 font-bold uppercase tracking-wider">Found!</span>
+      </div>
+
+      <!-- Active Buttons (Untouched) -->
+      <a href="https://p.superdesign.dev/draft/ba927e26-dad3-476f-bbd3-02ea254c5dc3" id="btn-s2-2" class="button-3d button-square btn-blue flex items-center justify-center hover:scale-105 transition-transform">
+        <span class="w-3 h-3 bg-white/20 rounded-full"></span>
+      </a>
+
+      <a href="#wrong" id="btn-s2-3" class="button-3d button-rect btn-red flex items-center justify-center hover:scale-105 transition-transform">
+        <span class="w-8 h-2 bg-white/20 rounded-full"></span>
+      </a>
+
+      <!-- Other Player Failed/Taken Buttons -->
+      <div class="flex flex-col items-center gap-2">
+        <button class="button-3d button-circle btn-gray pressed opacity-40 grayscale flex items-center justify-center pointer-events-none" id="btn-s2-4">
+          <iconify-icon icon="lucide:x" class="text-white/60 text-2xl"></iconify-icon>
+        </button>
+        <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Taken</span>
+      </div>
+
+      <a href="#wrong" id="btn-s2-5" class="button-3d button-square btn-pink flex items-center justify-center hover:scale-105 transition-transform">
+        <iconify-icon icon="lucide:star" class="text-white/30"></iconify-icon>
+      </a>
+
+      <div class="flex flex-col items-center gap-2">
+        <button class="button-3d button-rect btn-gray pressed opacity-40 grayscale flex items-center justify-center pointer-events-none" id="btn-s2-6">
+          <iconify-icon icon="lucide:slash" class="text-white/60 text-2xl"></iconify-icon>
+        </button>
+        <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Taken</span>
+      </div>
+
+      <a href="#wrong" id="btn-s2-7" class="button-3d button-circle btn-yellow flex items-center justify-center hover:scale-105 transition-transform">
+        <span class="w-4 h-4 border-2 border-white/20 rounded-sm"></span>
+      </a>
+
+      <a href="#wrong" id="btn-s2-8" class="button-3d button-square btn-blue flex items-center justify-center hover:scale-105 transition-transform">
+        <iconify-icon icon="lucide:zap" class="text-white/30"></iconify-icon>
+      </a>
+
+      <a href="#wrong" id="btn-s2-9" class="button-3d button-rect btn-pink flex items-center justify-center hover:scale-105 transition-transform">
+        <span class="w-6 h-6 bg-white/10 rounded-full blur-[2px]"></span>
+      </a>
+
+      <div class="flex flex-col items-center gap-2">
+        <button class="button-3d button-circle btn-gray pressed opacity-40 grayscale flex items-center justify-center pointer-events-none" id="btn-s2-10">
+          <iconify-icon icon="lucide:x" class="text-white/60 text-2xl"></iconify-icon>
+        </button>
+        <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Taken</span>
+      </div>
+    </main>
+
+    <!-- Bottom Navigation / Info -->
+    <footer class="fixed bottom-8 left-0 right-0 z-40 flex justify-center">
+      <div class="bg-black text-white px-6 py-3 rounded-2xl flex items-center gap-8 shadow-2xl">
+        <a href="https://p.superdesign.dev/draft/26de9a64-f743-42a0-84ea-826ee0fb6df0" id="back-intro-link" class="text-sm font-bold opacity-60 hover:opacity-100 transition-opacity flex items-center gap-2">
+          <iconify-icon icon="lucide:arrow-left"></iconify-icon>
+          QUIT GAME
+        </a>
+        <div class="w-px h-4 bg-white/20"></div>
+        <div class="text-[11px] tracking-widest uppercase text-white/40 flex items-center gap-2">
+          <iconify-icon icon="lucide:users"></iconify-icon>
+          32 Players Online
+        </div>
+        <div class="w-px h-4 bg-white/20"></div>
+        <a href="https://p.superdesign.dev/draft/ba927e26-dad3-476f-bbd3-02ea254c5dc3" id="skip-stage-link" class="text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-2">
+          NEXT STAGE
+          <iconify-icon icon="lucide:chevron-right"></iconify-icon>
+        </a>
+      </div>
+    </footer>
+
+    <!-- Info Tooltip (Bottom Right) -->
+    <div class="fixed bottom-8 right-8 z-50 group">
+       <div class="absolute bottom-full right-0 mb-4 bg-white border border-gray-100 text-gray-600 p-5 rounded-3xl w-72 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all shadow-2xl pointer-events-none">
+          <h4 class="font-black text-black mb-2 text-sm uppercase">STAGE 2 OBJECTIVE</h4>
+          <p class="text-xs leading-relaxed">
+            You need to find <span class="font-bold text-green-600">2 correct buttons</span> to advance. 
+            Gray buttons with an <iconify-icon icon="lucide:x" class="inline align-middle"></iconify-icon> have already been clicked by other players in this session.
+          </p>
+          <div class="mt-4 pt-4 border-t border-gray-50 flex items-center gap-2 text-[10px] font-bold text-orange-500">
+            <iconify-icon icon="lucide:alert-circle"></iconify-icon>
+            FAILING CONSUMES 1 ENERGY
+          </div>
+       </div>
+       <button class="w-14 h-14 bg-white border border-gray-100 rounded-full flex items-center justify-center text-gray-400 hover:text-black hover:scale-110 transition-all shadow-lg">
+          <iconify-icon icon="lucide:info" class="text-2xl"></iconify-icon>
+       </button>
+    </div>
+  </div>
+</body>
+</html>

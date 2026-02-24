@@ -1,26 +1,24 @@
 'use client';
 
+import { Check, X } from 'lucide-react';
 import { ButtonState } from '@/types';
+
+// Button colors and shapes
+const COLORS = ['btn-red', 'btn-blue', 'btn-green', 'btn-yellow', 'btn-pink', 'btn-gray'];
+const SHAPES = ['rounded-full', 'rounded-xl', 'rounded-lg'];
 
 interface ButtonProps {
   state: ButtonState;
   disabled: boolean;
   onPress: (index: number) => void;
+  colorIndex?: number;
+  shapeIndex?: number;
 }
 
-export default function Button({ state, disabled, onPress }: ButtonProps) {
-  const getButtonStyle = () => {
-    if (!state.isPressed) {
-      // 未押下：青いボタン
-      return 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white shadow-lg hover:shadow-xl';
-    }
-    if (state.isCorrect) {
-      // 正解：緑
-      return 'bg-green-500 text-white cursor-not-allowed';
-    }
-    // 不正解：赤
-    return 'bg-red-500 text-white cursor-not-allowed';
-  };
+export default function Button({ state, disabled, onPress, colorIndex, shapeIndex }: ButtonProps) {
+  // Deterministic color/shape based on index
+  const color = COLORS[colorIndex ?? state.index % COLORS.length];
+  const shape = SHAPES[shapeIndex ?? state.index % SHAPES.length];
 
   const handleClick = () => {
     if (!state.isPressed && !disabled) {
@@ -28,21 +26,55 @@ export default function Button({ state, disabled, onPress }: ButtonProps) {
     }
   };
 
+  // Correct button
+  if (state.isPressed && state.isCorrect) {
+    return (
+      <button
+        disabled
+        className={`
+          button-3d btn-green pressed correct-pulse
+          w-[68px] h-[68px] ${shape}
+          flex items-center justify-center
+          pointer-events-none
+        `}
+      >
+        <Check className="w-6 h-6 text-white" strokeWidth={3} />
+      </button>
+    );
+  }
+
+  // Wrong / Taken button
+  if (state.isPressed && !state.isCorrect) {
+    return (
+      <button
+        disabled
+        className={`
+          button-3d btn-gray pressed
+          w-[68px] h-[68px] ${shape}
+          flex items-center justify-center
+          opacity-40 grayscale pointer-events-none
+        `}
+      >
+        <X className="w-5 h-5 text-white/60" />
+      </button>
+    );
+  }
+
+  // Active button (unpressed)
   return (
     <button
       onClick={handleClick}
-      disabled={state.isPressed || disabled}
+      disabled={disabled}
       className={`
-        w-full aspect-square rounded-lg font-bold text-lg
-        transition-all duration-200 transform
-        ${getButtonStyle()}
-        ${!state.isPressed && !disabled ? 'hover:scale-105 active:scale-95' : ''}
-        ${disabled && !state.isPressed ? 'opacity-50 cursor-not-allowed' : ''}
+        button-3d ${color}
+        w-[68px] h-[68px] ${shape}
         flex items-center justify-center
-        min-h-[40px] min-w-[40px]
+        hover:scale-105 active:scale-95
+        transition-transform
+        ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}
       `}
     >
-      {state.isPressed ? (state.isCorrect ? '○' : '×') : '?'}
+      <span className="w-3 h-3 bg-white/20 rounded-full" />
     </button>
   );
 }

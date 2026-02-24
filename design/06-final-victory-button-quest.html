@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VICTORY! - Button Quest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta name="view-transition" content="same-origin">
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/satoshi');
+
+    :root {
+      --bg-color: #ffffff;
+      --primary-green: #22c55e;
+    }
+
+    html {
+      background-color: var(--bg-color);
+    }
+
+    @view-transition {
+      navigation: auto;
+    }
+
+    body {
+      font-family: 'Satoshi', 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .grain {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      top: -20px;
+      opacity: 0.8;
+      animation: confetti-fall linear infinite;
+    }
+
+    @keyframes confetti-fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    .trophy-bounce {
+      animation: trophy-bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes trophy-bounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-20px) scale(1.05); }
+    }
+
+    .button-3d {
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 6px 0 var(--btn-shadow), 0 12px 20px rgba(0,0,0,0.1);
+    }
+
+    .button-3d:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 var(--btn-shadow), 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn-green { --btn-shadow: #15803d; background: #22c55e; }
+    .btn-black { --btn-shadow: #000000; background: #1a1a1a; }
+
+    ::view-transition-old(main-content) {
+      animation: 0.4s ease-out both fade-out;
+    }
+    ::view-transition-new(main-content) {
+      animation: 0.4s ease-in 0.1s both fade-in;
+    }
+
+    @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen bg-white relative flex flex-col items-center justify-center overflow-hidden">
+    <div class="fixed inset-0 grain z-10"></div>
+    
+    <div id="confetti-container" class="fixed inset-0 pointer-events-none z-20"></div>
+
+    <main style="view-transition-name: main-content;" class="relative z-30 flex flex-col items-center text-center px-6 max-w-2xl w-full">
+      <div class="mb-8 relative">
+        <div class="absolute inset-0 bg-yellow-400/20 blur-3xl rounded-full scale-150"></div>
+        <div class="trophy-bounce">
+          <iconify-icon icon="lucide:trophy" class="text-8xl md:text-9xl text-yellow-400 drop-shadow-2xl"></iconify-icon>
+        </div>
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-4 uppercase">
+        Champion!
+      </h1>
+      <p class="text-lg md:text-xl text-gray-500 font-medium mb-12">
+        You have conquered the Ultimate Button Quest.
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full mb-16">
+        <div class="bg-gray-50 p-6 rounded-[32px] border border-gray-100 flex flex-col items-center">
+          <span class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Stages</span>
+          <span class="text-3xl font-bold text-gray-900">5 / 5</span>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-[32px] border border-gray-100 flex flex-col items-center">
+          <span class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Luck Score</span>
+          <span class="text-3xl font-bold text-green-500">+124</span>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-[32px] border border-gray-100 flex flex-col items-center col-span-2 md:col-span-1">
+          <span class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Percentile</span>
+          <span class="text-3xl font-bold text-gray-900">Top 2%</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+        <button id="share-btn" class="button-3d btn-black px-12 py-5 rounded-2xl text-white font-bold flex items-center justify-center gap-2">
+          <iconify-icon icon="lucide:share-2"></iconify-icon>
+          Share Victory
+        </button>
+        <a href="https://p.superdesign.dev/draft/1c4531b0-1e37-4905-a6e8-2b0834917ee5" id="play-again-link" class="button-3d btn-green px-12 py-5 rounded-2xl text-white font-bold flex items-center justify-center gap-2">
+          <iconify-icon icon="lucide:refresh-cw"></iconify-icon>
+          Play Again
+        </a>
+      </div>
+
+      <div class="mt-12">
+        <a href="https://p.superdesign.dev/draft/26de9a64-f743-42a0-84ea-826ee0fb6df0" id="nav-home-link" class="text-gray-400 hover:text-black transition-colors font-medium text-sm flex items-center gap-2">
+          <iconify-icon icon="lucide:home"></iconify-icon>
+          Return to Game Menu
+        </a>
+      </div>
+    </main>
+
+    <div class="fixed bottom-8 left-8 z-50 pointer-events-none opacity-50">
+      <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-gray-400 uppercase">
+        <iconify-icon icon="lucide:medal"></iconify-icon>
+        Verified Master Explorer
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function createConfetti() {
+      const container = document.getElementById('confetti-container');
+      const colors = ['#ef4444', '#3b82f6', '#22c55e', '#eab308', '#ec4899', '#f97316'];
+      
+      for (let i = 0; i < 60; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + 'vw';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.width = (Math.random() * 8 + 4) + 'px';
+          confetti.style.height = (Math.random() * 12 + 6) + 'px';
+          confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+          confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+          container.appendChild(confetti);
+
+          confetti.addEventListener('animationend', () => confetti.remove());
+        }, i * 100);
+      }
+    }
+
+    document.getElementById('share-btn').onclick = () => {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Button Quest Champion!',
+          text: 'I found all 30 secret buttons in Stage 5 of Button Quest!',
+          url: window.location.href
+        }).catch(() => {});
+      } else {
+        alert('Victory shared to clipboard!');
+      }
+    };
+
+    // Initial celebration
+    window.onload = createConfetti;
+    // Repeat confetti every few seconds
+    setInterval(createConfetti, 5000);
+  </script>
+</body>
+</html>
