@@ -1,7 +1,7 @@
 import { UserState } from '@/types';
 
 const USER_STORAGE_KEY = 'button-rush-user';
-const AD_GRANT_PRESSES = 3;
+const AD_GRANT_PRESSES = 1;
 
 /**
  * ユーザートークンを生成

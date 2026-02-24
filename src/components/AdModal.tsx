@@ -44,7 +44,7 @@ export default function AdModal({ isOpen, onComplete, onClose }: AdModalProps) {
           <>
             <p className="text-gray-600 mb-6">
               Watch a short ad to get<br />
-              <span className="text-2xl font-black text-gray-900">3 more taps</span>
+              <span className="text-2xl font-black text-gray-900">1 more tap</span>
             </p>
             <button
               onClick={handleStartAd}
@@ -78,7 +78,7 @@ export default function AdModal({ isOpen, onComplete, onClose }: AdModalProps) {
               onClick={onComplete}
               className="button-3d btn-green w-full py-4 rounded-2xl font-bold text-white text-lg"
             >
-              +3 taps
+              +1 tap
             </button>
           </>
         )}
