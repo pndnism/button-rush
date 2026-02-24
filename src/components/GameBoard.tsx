@@ -88,8 +88,8 @@ export default function GameBoard() {
       saveUserState(newUserState);
       setStageState(newStageState);
 
-      // ステージクリア判定
-      if (isCorrect && newStageState.remainingCorrect === 0) {
+      // ステージクリア判定 - 1個正解を見つけたらクリア
+      if (isCorrect) {
         const nextStage = stageState.stageId + 1;
 
         if (nextStage > getMaxStage()) {
