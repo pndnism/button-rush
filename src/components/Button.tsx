@@ -9,19 +9,18 @@ const SHAPES = ['rounded-full', 'rounded-xl', 'rounded-lg'];
 
 interface ButtonProps {
   state: ButtonState;
-  disabled: boolean;
   onPress: (index: number) => void;
   colorIndex?: number;
   shapeIndex?: number;
 }
 
-export default function Button({ state, disabled, onPress, colorIndex, shapeIndex }: ButtonProps) {
+export default function Button({ state, onPress, colorIndex, shapeIndex }: ButtonProps) {
   // Deterministic color/shape based on index
   const color = COLORS[colorIndex ?? state.index % COLORS.length];
   const shape = SHAPES[shapeIndex ?? state.index % SHAPES.length];
 
   const handleClick = () => {
-    if (!state.isPressed && !disabled) {
+    if (!state.isPressed) {
       onPress(state.index);
     }
   };
@@ -60,18 +59,16 @@ export default function Button({ state, disabled, onPress, colorIndex, shapeInde
     );
   }
 
-  // Active button (unpressed)
+  // Active button (unpressed) - always clickable, game logic handles ad modal
   return (
     <button
       onClick={handleClick}
-      disabled={disabled}
       className={`
         button-3d ${color}
         w-[68px] h-[68px] ${shape}
         flex items-center justify-center
         hover:scale-105 active:scale-95
-        transition-transform
-        ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}
+        transition-transform cursor-pointer
       `}
     >
       <span className="w-3 h-3 bg-white/20 rounded-full" />

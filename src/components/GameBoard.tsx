@@ -176,7 +176,6 @@ export default function GameBoard() {
   }
 
   const buttonStates = getButtonStates();
-  const canPress = canPressButton(userState);
 
   return (
     <div className="min-h-screen bg-white relative flex flex-col">
@@ -193,7 +192,6 @@ export default function GameBoard() {
           <Button
             key={state.index}
             state={state}
-            disabled={!canPress}
             onPress={handlePressButton}
           />
         ))}
